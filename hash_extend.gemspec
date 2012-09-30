@@ -8,9 +8,9 @@ Gem::Specification.new do |gem|
   gem.version       = HashExtend::VERSION
   gem.authors       = ["Thomas Petrachi"]
   gem.email         = ["thomas.petrachi@vodeclic.com"]
-  gem.description   = %q{in dev : extend hash methods}
-  gem.summary       = %q{in dev : add :delete_many}
-  gem.homepage      = ""
+  gem.description   = %q{Extend ruby Hash. No override.}
+  gem.summary       = %q{Adding methods %w{stealth_delete map_values map_keys delete_many insert compact select_by}}
+  gem.homepage      = "https://github.com/petrachi/hash_extend"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
