@@ -25,11 +25,15 @@ class Hash
   # ?> {1=>1, 2=>2}.map_keys{ |k| k.to_s }
   #   => {"2"=>2, "1"=>1}
   # modify keys from hash through block
-  def map_keys!
-    self.each do |key, value|
-      self[yield key] = value
-      self.delete key
+  def map_keys
+    self.inject({}) do |hash, (key, value)|
+      hash[yield key] = value; hash
     end
+  end
+  
+  def map_keys! &block
+    to_map = self.dup
+    self.clear.merge! to_map.map_keys &block
   end
   
   
@@ -73,7 +77,7 @@ class Hash
   # allow to compact (like Array), default on value.nil?
   def compact! options = Hash.new
     compare = options.delete(:compare) || :value
-    raise ArgumentError, ":compare option must be in %w{key value}" if [:key, :value].include? compare.to_sym
+    raise ArgumentError, ":compare option must be in %w{key value}" unless [:key, :value].include? compare.to_sym
     
     if (with = options.delete :with)
       self.each do |key, value|
@@ -99,10 +103,10 @@ class Hash
   
   
   # duplicate method without self modification
-  [:stealth_delete, :map_values, :map_keys, :compact, :select_by].each do |method_name|
-    define_method method_name do |*args|
+  [:stealth_delete, :map_values, :compact, :select_by].each do |method_name|
+    define_method method_name do |*args, &block|
       hash = self.dup
-      eval "hash.#{ method_name }! *args"
+      eval "hash.#{ method_name }! *args, &block"
       return hash
     end
   end
