@@ -2,6 +2,8 @@
 
 Extend ruby Hash. No override.
 
+## Support
+
 Ruby 1.9.3: All feature supported
 
 Ruby ree-1.8.7: All feature supported except :select_by
