@@ -260,6 +260,8 @@ Code
 	end
 ```
 
+Note : Raise 'NoMethodError' on ruby 1.8.7
+
 ## Contributing
 
 1. Fork it
