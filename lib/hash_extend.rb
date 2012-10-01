@@ -73,10 +73,7 @@ class Hash
     
   # something like #keep_if, but instead of block, pass collection of keys to select
   def select_by! *collection
-    self.keep_if{ |field, _| collection.include? field.to_sym }
-    
-  rescue NoMethodError => e
-    raise NoMethodError.new("undefined method `#{ __method__ }' for #{ self.inspect }:#{ self.class }") if e.name == :keep_if
+    self.delete_if{ |field, _| !collection.include? field.to_sym }
   end
   
   

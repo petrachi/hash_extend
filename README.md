@@ -4,9 +4,7 @@ Extend ruby Hash. No override.
 
 ## Support
 
-Ruby 1.9.3: All feature supported
-
-Ruby ree-1.8.7: All feature supported except :select_by
+Validate for Ruby 1.9.3 and Ruby ree-1.8.7
 
 ## Installation
 
@@ -258,11 +256,9 @@ Code
 
 ```ruby	
 	def select_by! *collection
-  		self.keep_if{ |field, _| collection.include? field.to_sym }  
+  		self.delete_if{ |field, _| !collection.include? field.to_sym }  
 	end
 ```
-
-Note : Raise 'NoMethodError' on ruby 1.8.7
 
 ## Contributing
 
