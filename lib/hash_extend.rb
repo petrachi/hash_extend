@@ -2,8 +2,6 @@ require "hash_extend/version"
 
 class Hash
 
-  # ?> {1=>1, 2=>2}.stealth_delete(1)
-  #   => {2=>2}
   # delete key(s) but return self instead of deleted value
   def stealth_delete! *keys
     keys.each do |key|
@@ -13,8 +11,6 @@ class Hash
   end
   
   
-  # ?> {1=>1, 2=>2}.map_values{ |v| v**2 }
-  #   => {1=>1, 2=>4}
   # modify values fro hash through block
   def map_values!
     self.each do |key, value|
@@ -22,8 +18,6 @@ class Hash
     end
   end
   
-  # ?> {1=>1, 2=>2}.map_keys{ |k| k.to_s }
-  #   => {"2"=>2, "1"=>1}
   # modify keys from hash through block
   def map_keys
     self.inject({}) do |hash, (key, value)|
@@ -37,23 +31,12 @@ class Hash
   end
   
   
-  # ?> h = Hash[:un, 1, :deux, 2, :trois, 3]
-  #   => {:un=>1, :deux=>2, :trois=>3}
-  # ?> h.delete_many(:un, :trois)
-  #   => [1, 3]
-  # ?> h
-  #   => {:deux=>2}
-  #  
-  # ?> h.delete_many(:six)
-  #   => [nil]
   # delete severals keys in one time
   def delete_many *keys
     keys.map{ |key| self.delete(key) }
   end
   
   
-  # ?> insert("valeur", Hash.new, :key_one, :key_two, :key_wi)
-  #   => {:key_one=>{:key_two=>{:key_wi=>"valeur"}}}
   # insert a value trough severals "levels" of hashs
   def insert value, *keys
     if keys.size > 1
@@ -68,12 +51,7 @@ class Hash
     self
   end
   
-  # ?> {:un=>1, :deux=>2, :trois=>3, :quatre=>nil, :cinq=>[]}.compact!
-  #   => {:cinq=>[], :un=>1, :deux=>2, :trois=>3}
-  # ?> {:un=>1, :deux=>2, :trois=>3, :quatre=>nil, :cinq=>[]}.compact!(:with=>:blank?)
-  #   => {:un=>1, :deux=>2, :trois=>3}
-  # ?> {:un=>1, :deux=>2, :trois=>3, :quatre=>nil, :cinq=>[]}.compact!(:with=>"is_a?(Fixnum)")
-  #   => {:quatre=>nil, :cinq=>[]}
+  
   # allow to compact (like Array), default on value.nil?
   def compact! options = Hash.new
     compare = options.delete(:compare) || :value
@@ -92,13 +70,13 @@ class Hash
     
     self
   end
-  
-  
-  # ?> {:action=>"index", :controller=>"home", :id=>"42", :firstname=>"thomas", :name=>"petrachi"}.select_from_collection! [:id, :firstname, :name]
-  #   => {:firstname=>"thomas", :name=>"petrachi", :id=>"42"}
+    
   # something like #keep_if, but instead of block, pass collection of keys to select
-  def select_by! collection, *args, &block
-    self.keep_if{ |field, _| collection.include? field.to_sym }  
+  def select_by! *collection
+    self.keep_if{ |field, _| collection.include? field.to_sym }
+    
+  rescue NoMethodError => e
+    raise NoMethodError.new("undefined method `#{ __method__ }' for #{ self.inspect }:#{ self.class }") if e.name == :keep_if
   end
   
   
