@@ -125,7 +125,7 @@ Demo
 
 ```ruby
 	h = Hash[:one, 1, :two, 2, :three, 3]		#=> {:one=>1, :two=>2, :three=>3}
-	h.delete_many(:un, :trois)					#=> [1, 3]
+	h.delete_many(:one, :three)					#=> [1, 3]
 	h											#=> {:two=>2}
 	
 	h.delete_many(:six)							#=> [nil]
@@ -188,19 +188,19 @@ Arguments : ':with' is recommended in %w{blank? empty?}, default is :nil?
 Demo
 
 ```ruby
-	{:un=>1, :deux=>2, :trois=>3, :quatre=>nil, :cinq=>[]}.compact!
-	#=> {:cinq=>[], :un=>1, :deux=>2, :trois=>3}
+	{:one=>1, :two=>2, :three=>3, :four=>nil, :five=>[]}.compact!
+	#=> {:five=>[], :one=>1, :two=>2, :three=>3}
 
-	{:un=>1, :deux=>2, :trois=>3, :quatre=>nil, :cinq=>[]}.compact!(:with=>:blank?)
-	#=> {:un=>1, :deux=>2, :trois=>3}
+	{:one=>1, :two=>2, :three=>3, :four=>nil, :five=>[]}.compact!(:with=>:blank?)
+	#=> {:one=>1, :two=>2, :three=>3}
 	
 	# for the perverts ones
-	{:un=>1, :deux=>2, :trois=>3, :quatre=>nil, :cinq=>[]}.compact!(:with=>"is_a?(Fixnum)")
-	#=> {:quatre=>nil, :cinq=>[]}
+	{:one=>1, :two=>2, :three=>3, :four=>nil, :five=>[]}.compact!(:with=>"is_a?(Fixnum)")
+	#=> {:four=>nil, :five=>[]}
 	
 	# And for the ones who REALLY care about memory
-	{:un=>1, "deux"=>2, "trois"=>3, "quatre"=>nil, :cinq=>[]}.compact!(:compare => :key, :with=>"is_a?(String)")
-	#=> {:un=>1, :cinq=>[]}
+	{:one=>1, "two"=>2, "three"=>3, "four"=>nil, :five=>[]}.compact!(:compare => :key, :with=>"is_a?(String)")
+	#=> {:one=>1, :five=>[]}
 ```
 
 Code
