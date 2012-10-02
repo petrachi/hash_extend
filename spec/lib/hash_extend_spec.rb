@@ -77,4 +77,12 @@ describe Hash do
       subject.insert(15, :c, :d).should == subject
     end
   end
+
+  describe '#compact!' do
+    it 'pending'
+  end
+
+  describe '#select_by!' do
+    it 'pending'
+  end
 end
