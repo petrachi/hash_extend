@@ -1,4 +1,4 @@
-require "hash_extend/version"
+
 
 class Hash
 
