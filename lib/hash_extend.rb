@@ -34,7 +34,6 @@ class Hash
   # delete severals keys in one time
   def delete_many *keys
     keys.map{ |key| delete(key) }
-    self
   end
   
   

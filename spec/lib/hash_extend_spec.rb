@@ -45,13 +45,13 @@ describe Hash do
   
   describe '#delete_many(*keys)' do
     it 'can delete one key' do
-      subject.delete_many(:a)
+      subject.delete_many(:a).should == [{b: 1}]
       subject.should_not have_key(:a)
       subject.should have_key(:b)
     end
 
     it 'can delete many keys' do
-      subject.delete_many(:a, :b)
+      subject.delete_many(:a, :b).should == [{b: 1}, 2]
       subject.should_not have_key(:a)
       subject.should_not have_key(:b)
     end
