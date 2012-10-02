@@ -12,4 +12,15 @@ describe Hash do
       subject.should_not have_key(:b)
     end
   end
+
+  describe '#map_values!' do
+    it 'modifies values from hash through block' do
+      subject.map_values! { 1 }
+      subject.should == { a: 1, b: 1 }
+    end
+
+    it 'returns modified hash' do
+      subject.map_values! { 2 }.should == { a: 2, b: 2 }
+    end
+  end
 end
