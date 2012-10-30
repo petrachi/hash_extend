@@ -11,7 +11,7 @@ class Hash
   end
   
   
-  # modify values fro hash through block
+  # modify values from hash through block
   def map_values!
     self.each do |key, value|
       self[key] = yield value
@@ -33,7 +33,7 @@ class Hash
   
   # delete severals keys in one time
   def delete_many *keys
-    keys.map{ |key| self.delete(key) }
+    keys.map{ |key| delete(key) }
   end
   
   
