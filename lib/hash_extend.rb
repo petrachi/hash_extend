@@ -1,15 +1,48 @@
 require "hash_extend/version"
 
 class Hash
-
-  # delete key(s) but return self instead of deleted value
-  def stealth_delete! *keys
-    keys.each do |key|
-      delete key
+  
+  
+  unless method_defined? :except!
+    
+    def except! *keys
+      
+      p "is personnal methods"
+      
+      keys.each do |key|
+        delete key
+      end
+      return self
     end
-    return self
+    
   end
   
+  unless method_defined? :youpi
+    
+    def youpi
+      
+      p "youpi"
+
+    end
+    
+  end
+  
+  
+  
+  
+  
+  # delete key(s) but return self instead of deleted value
+  def stealth_delete! *keys
+    
+    except! keys
+    warn "WARNING : 'stealth_delete!' is deprecated and will be deleted in version X.Y - Use 'extract!' to fit Rails 3's ActiveSupport"
+  end
+  
+  def stealth_delete *keys
+    
+    except! keys
+    warn "WARNING : method 'stealth_delete' is deprecated and will be deleted in version X.Y - Use 'extract' to fit Rails 3's ActiveSupport"
+  end
   
   # modify values from hash through block
   def map_values!
@@ -78,12 +111,18 @@ class Hash
   
   
   # duplicate method without self modification
-  [:stealth_delete, :map_values, :compact, :select_by].each do |method_name|
-    define_method method_name do |*args, &block|
-      hash = self.dup
-      eval "hash.#{ method_name }! *args, &block"
-      return hash
+  [:except, :map_values, :compact, :select_by].each do |method_name|
+    
+    unless method_defined? method_name
+    
+      define_method method_name do |*args, &block|
+        hash = self.dup
+        eval "hash.#{ method_name }! *args, &block"
+        return hash
+      end
+    
     end
+    
   end
   
 end
