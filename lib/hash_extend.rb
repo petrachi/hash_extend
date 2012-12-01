@@ -1,48 +1,18 @@
 require "hash_extend/version"
 
 class Hash
-  
-  
-  unless method_defined? :except!
-    
-    def except! *keys
-      
-      p "is personnal methods"
-      
-      keys.each do |key|
-        delete key
-      end
-      return self
-    end
-    
-  end
-  
-  unless method_defined? :youpi
-    
-    def youpi
-      
-      p "youpi"
-
-    end
-    
-  end
-  
-  
-  
-  
-  
   # delete key(s) but return self instead of deleted value
   def stealth_delete! *keys
-    
+    warn "WARNING : method 'stealth_delete!' is deprecated and will be deleted in version X.Y - Use 'except!' to fit Rails' ActiveSupport"
     except! keys
-    warn "WARNING : 'stealth_delete!' is deprecated and will be deleted in version X.Y - Use 'extract!' to fit Rails 3's ActiveSupport"
   end
   
   def stealth_delete *keys
-    
-    except! keys
-    warn "WARNING : method 'stealth_delete' is deprecated and will be deleted in version X.Y - Use 'extract' to fit Rails 3's ActiveSupport"
+    warn "WARNING : method 'stealth_delete' is deprecated and will be deleted in version X.Y - Use 'except' to fit Rails' ActiveSupport"
+    except keys
   end
+  
+  
   
   # modify values from hash through block
   def map_values!
@@ -105,13 +75,26 @@ class Hash
   end
     
   # something like #keep_if, but instead of block, pass collection of keys to select
-  def select_by! *collection
-    self.delete_if{ |field, _| !collection.include? field.to_sym }
+  def select_by! *keys
+    warn "WARNING : method 'select_by!' is deprecated and will be deleted in version 1.3 - Use 'extract!' to fit Rails's ActiveSupport"
+    self.delete_if{ |field, _| !keys.include? field.to_sym }
   end
   
+  def select_by *keys
+    warn "WARNING : method 'select_by' is deprecated and will be deleted in version 1.3 - Use 'slice' to fit Rails's ActiveSupport"
+    slice *keys
+  end
+  
+  unless method_defined? :extract!
+    def extract! *keys
+      hash = {}
+      keys.each {|key| hash[key] = delete(key) }
+      hash
+    end
+  end
   
   # duplicate method without self modification
-  [:except, :map_values, :compact, :select_by].each do |method_name|
+  [:map_values, :compact].each do |method_name|
     
     unless method_defined? method_name
     

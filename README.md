@@ -22,7 +22,11 @@ Or install it yourself as:
 
 ## Usage
 
-### stealth_delete
+### stealth_delete -- Deprecated -> Use except
+
+method 'stealth_delete' is deprecated and will be deleted in version 2.4 - Use 'except' to fit Rails's ActiveSupport
+
+--
 
 Delete key(s) passed by, but return the hash instead of the deleted value
 
@@ -143,6 +147,31 @@ Code
 	end
 ```
 
+--
+
+FYI : ActiveSupport provide method 'slice'.
+
+```ruby
+	h = Hash[:one, 1, :two, 2, :three, 3]		#=> {:one=>1, :two=>2, :three=>3}
+	h.slice(:one, :three)						#=> {:three=>3, :one=>1}
+	h											#=> {:one=>1, :two=>2, :three=>3}
+	
+	h.slice(:six)								#=> {}
+```
+
+WARNING : slice! has not the same behavior. Check out ActiveSupport guides for more information : http://guides.rubyonrails.org/active_support_core_extensions.html
+
+--
+
+FYI : Rails 3's ActiveSupport provide method 'extract!'. (this gem provide method 'extract!' for Rails < 3)
+
+```ruby
+	h = Hash[:one, 1, :two, 2, :three, 3]		#=> {:one=>1, :two=>2, :three=>3}
+	h.extract!(:one, :three)					#=> {:one=>1, :three=>3}
+	h											#=> {:two=>2}
+	
+	h.extract!(:six)							#=> {:six=>nil}
+```
 
 ### insert
 
@@ -230,13 +259,19 @@ Code
 ```
 
 
-### select_by
+### select_by -- Deprecated -> Use except
+
+method 'select_by' is deprecated and will be deleted in version 2.4 - Use 'slice' to fit Rails's ActiveSupport
+
+method 'select_by!' is deprecated and will be deleted in version 2.4 - Use 'extract!' to fit Rails's ActiveSupport
+
+--
 
 Select into hash from a collection of keys. Usefull to select correct params after a form.
 
 ```ruby
-	select_by! *collection
-	select_by *collection
+	select_by! *keys
+	select_by *keys
 ```
 
 Demo
@@ -255,8 +290,40 @@ Demo
 Code
 
 ```ruby	
-	def select_by! *collection
-  		self.delete_if{ |field, _| !collection.include? field.to_sym }  
+	def select_by! *keys
+  		self.delete_if{ |field, _| !keys.include? field.to_sym }  
+	end
+```
+
+### extract -- Only for Rails < 3
+
+Select into hash from a collection of keys
+
+```ruby
+	extract! *keys
+```
+
+Demo
+
+```ruby
+	h = Hash[:one, 1, :two, 2, :three, 3]				#=> {:two=>2, :three=>3, :one=>1}
+	h.extract! :one, :three								#=> {:one=>1, :three=>3}
+	h													#=> {:two=>2}
+	
+	{:one=>1, :two=>2, :three=>3, :four=>4}.extract! :one, :six
+	#=> {:one=>1, :six=>nil}
+	
+	{:one=>1, :two=>2, :three=>3, :four=>4}.extract! :six, :seven
+	#=> {:six=>nil, :seven=>nil}
+```
+
+Code
+
+```ruby	
+	def extract! *keys
+  		hash = {}
+  		keys.each {|key| hash[key] = delete(key) }
+  		hash
 	end
 ```
 
