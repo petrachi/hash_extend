@@ -1,3 +1,7 @@
+# Deprecation note
+
+This gem is no longer maintained.
+
 # HashExtend
 
 Extend ruby Hash. No override.
